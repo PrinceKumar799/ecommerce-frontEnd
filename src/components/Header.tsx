@@ -7,22 +7,30 @@ import {
   Tabs,
   useMediaQuery,
   useTheme,
+  Box,
+  Button,
 } from "@mui/material";
 import {
   ShoppingCart as ShoppingCartIcon,
   AccountCircle as AccountCircleIcon,
 } from "@mui/icons-material";
-import logo from "./assets/logo.png";
+import logo from "../assets/logo.png";
 
-import "./components/Header.css";
-import { useState } from "react";
+import "./Header.css";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import DrawerNav from "./components/DrawerNav";
+import DrawerNav from "./DrawerNav";
 const Header = () => {
   const [value, setValue] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const theme = useTheme();
   const navigate = useNavigate();
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  useEffect(() => {
+    if (localStorage.getItem("authToken")) {
+      setIsLoggedIn(true);
+    } else setIsLoggedIn(false);
+  }, []);
   return (
     <AppBar position="sticky" color="inherit" className="header">
       <Toolbar
@@ -49,17 +57,21 @@ const Header = () => {
           </Tabs>
         )}
 
-        <div>
-          <IconButton color="inherit" onClick={() => navigate("/carts")}>
-            <Badge badgeContent={0} color="error">
-              <ShoppingCartIcon />
-            </Badge>
-          </IconButton>
+        {isLoggedIn ? (
+          <Box>
+            <IconButton color="inherit" onClick={() => navigate("/carts")}>
+              <Badge badgeContent={0} color="error">
+                Cart <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
 
-          <IconButton color="inherit">
-            <AccountCircleIcon />
-          </IconButton>
-        </div>
+            <IconButton color="inherit">
+              Profile <AccountCircleIcon />
+            </IconButton>
+          </Box>
+        ) : (
+          <></>
+        )}
       </Toolbar>
     </AppBar>
   );

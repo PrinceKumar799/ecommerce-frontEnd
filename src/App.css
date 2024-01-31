@@ -4,6 +4,23 @@
   padding: 0 auto;
   text-align: center;
 }
+.outer-cnt {
+  /* display: flex;
+  flex-wrap: wrap; */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 90%;
+  margin: 24px auto;
+  align-items: center;
+  gap: 50px;
+}
+
+.inner-cnt1 {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  width: 300px;
+}
 
 .logo {
   height: 6em;
@@ -34,4 +51,12 @@
 
 .body {
   min-height: 90vh;
+}
+
+.cart-card-cnt {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px !important;
+  height: 100%;
 }

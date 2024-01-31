@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Login from "../Login";
-import Products from "../Products";
+import Login from "./Login";
+import Products from "./Products";
 import ProductDetails from "./ProductDetails";
-import Signup from "../Signup";
+import Signup from "./Signup";
 import Cart from "./Cart";
 const Body: React.FC = () => {
   return (

@@ -2,7 +2,7 @@ import { Box, Pagination } from "@mui/material";
 import ProductCard from "./ProductCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import SearchBar from "./components/SearchBar";
+import SearchBar from "./SearchBar";
 
 type ProductObj = {
   productId: number;
@@ -57,10 +57,11 @@ const Products: React.FC = () => {
     <div>
       <SearchBar handleNameFilter={handleFilter} />
       <Box
-        display="flex"
-        flexDirection="row"
-        flexWrap="wrap"
-        justifyContent="space-evenly"
+        className="outer-cnt"
+        // display="flex"
+        // flexDirection="row"
+        // flexWrap="wrap"
+        // justifyContent="space-evenly"
       >
         {products?.data?.map((product) => (
           <ProductCard product={product} />

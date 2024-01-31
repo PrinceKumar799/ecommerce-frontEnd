@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import CartItems from "./CartCard";
+import { useNavigate } from "react-router-dom";
 interface CartObj {
   cartItemId: number;
   productId: number;
@@ -14,14 +15,27 @@ interface CartObj {
 type CartResponseData = CartObj[];
 const Cart: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartResponseData>();
-  const addToCart = () => {};
-  const removeFromCart = () => {};
+  const navigate = useNavigate();
   const deleteFromCart = (productId: number) => {
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      navigate("/users/login");
+      return;
+    }
+
     axios
-      .patch(`http://localhost:3000/carts/remove?productId:${productId}`)
+      .patch(
+        `http://localhost:3000/carts/remove?productId=${productId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
       .then(() => {
         const newCartItems = cartItems?.filter(
-          (cartItem) => cartItem.productId != productId
+          (cartItem) => cartItem.productId !== productId
         );
         setCartItems(newCartItems);
       })
@@ -29,12 +43,13 @@ const Cart: React.FC = () => {
         console.log(err);
       });
   };
+
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
 
     // Check if authToken is available
     if (!authToken) {
-      console.log("User not authenticated. Handle this case.");
+      navigate("/users/login");
       return;
     }
     const apiUrl = "http://localhost:3000/carts";
@@ -61,9 +76,7 @@ const Cart: React.FC = () => {
         <CartItems
           key={cartItemData.cartItemId}
           cartItemData={cartItemData}
-          onAdd={addToCart}
           onDelete={deleteFromCart}
-          onRemove={removeFromCart}
         />
       ))}
     </div>

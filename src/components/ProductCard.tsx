@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import "../App.css";
 interface Product {
   name: string;
   productId: number;
@@ -43,8 +43,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           },
         }
       );
-
-      console.log(response.data);
+      alert("Product Added To cart Succesfully");
+      navigate("/");
     } catch (error) {
       // Handle the error
       console.error("Error adding product to cart:");
@@ -52,7 +52,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <Card style={{ marginBottom: "2.0rem" }}>
+    <Card
+      className="inner-cnt1"
+      // style={{ marginBottom: "2.0rem" }}
+    >
       <Link to={`/products/${productId}`}>
         <CardMedia
           component="img"

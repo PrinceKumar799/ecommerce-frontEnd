@@ -18,6 +18,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
   const handleLogin = async () => {
     try {
       // Make API call to post login data
@@ -29,7 +30,7 @@ const Login: React.FC = () => {
 
       // Store the token in local storage
       localStorage.setItem("authToken", authToken);
-      // useNavigate('/login');
+      navigate("/");
 
       // console.log(authToken);
     } catch (error) {

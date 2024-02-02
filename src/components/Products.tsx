@@ -3,6 +3,9 @@ import ProductCard from "./ProductCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchBar from "./SearchBar";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import Shimmer from "./Shimmer";
 
 type ProductObj = {
   productId: number;
@@ -22,18 +25,15 @@ interface productDataResponse {
 // type ProductData = ProductObj[];
 const Products: React.FC = () => {
   const [products, setProducts] = useState<productDataResponse>();
-  const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-
-  const handleFilter = (data: string): void => {
-    setFilterByName(data);
-  };
+  const filter = useSelector((state: RootState) => state.search.searchTerm);
   const handePageChage = (event, value: number) => {
     setPage(value);
   };
+
   useEffect(() => {
-    const apiUrl = `http://localhost:3000/products?name=${filterByName}&p=${page}`;
+    const apiUrl = `http://localhost:3000/products?name=${filter}&p=${page}`;
     setLoading(true);
     axios
       .get(apiUrl)
@@ -48,23 +48,17 @@ const Products: React.FC = () => {
       .catch((error) => {
         console.error("Error fetching products:", error);
       });
-  }, [filterByName, page]);
+  }, [filter, page]);
 
+  useEffect(() => {}, []);
   //Impelment Shimmer
-  if (!products) return <h2>Loading...</h2>;
+  if (loading) return <Shimmer />;
 
   return (
     <div>
-      <SearchBar handleNameFilter={handleFilter} />
-      <Box
-        className="outer-cnt"
-        // display="flex"
-        // flexDirection="row"
-        // flexWrap="wrap"
-        // justifyContent="space-evenly"
-      >
+      <Box className="outer-cnt">
         {products?.data?.map((product) => (
-          <ProductCard product={product} />
+          <ProductCard key={product.productId} product={product} />
         ))}
       </Box>
       <Box
@@ -78,6 +72,13 @@ const Products: React.FC = () => {
           page={page}
           color="primary"
           onChange={handePageChage}
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            left: "50%",
+            transform: "translateX(-50%)",
+            marginBottom: "1rem",
+          }}
         />
       </Box>
     </div>

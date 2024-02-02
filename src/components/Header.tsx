@@ -1,77 +1,41 @@
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Badge,
-  Tab,
-  Tabs,
-  useMediaQuery,
-  useTheme,
-  Box,
-  Button,
-} from "@mui/material";
-import {
-  ShoppingCart as ShoppingCartIcon,
-  AccountCircle as AccountCircleIcon,
-} from "@mui/icons-material";
-import logo from "../assets/logo.png";
+import { AppBar, Toolbar, useMediaQuery, useTheme, Box } from "@mui/material";
 
-import "./Header.css";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import DrawerNav from "./DrawerNav";
+import SearchBar from "./SearchBar";
+import logo from "../assets/logo.png";
+import HeaderTabs from "./HeaderTabs";
+
 const Header = () => {
-  const [value, setValue] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const theme = useTheme();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-  useEffect(() => {
-    if (localStorage.getItem("authToken")) {
-      setIsLoggedIn(true);
-    } else setIsLoggedIn(false);
-  }, []);
   return (
     <AppBar position="sticky" color="inherit" className="header">
-      <Toolbar
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          height: "80px",
-          alignContent: "center",
-        }}
-      >
-        <img
-          src={logo}
-          alt="Company Logo"
-          style={{ marginRight: "10px", height: "100%", borderRadius: "20%" }}
-        />
+      <Toolbar className="toolbar">
+        <img src={logo} alt="Company Logo" className="logo" />
+        <Box className="search-bar-box">
+          <SearchBar />
+        </Box>
+        {isMediumScreen ? <DrawerNav /> : <HeaderTabs />}
 
-        {isMediumScreen ? (
-          <DrawerNav />
-        ) : (
-          <Tabs value={value} onChange={(e, newVal) => setValue(newVal)}>
-            <Tab label={<Link to="/">Home</Link>} />
-            <Tab label={<Link to="/">Products</Link>} />
-            <Tab label={<Link to="/aboutUs">About Us</Link>} />
-          </Tabs>
-        )}
-
-        {isLoggedIn ? (
+        {/* {isLoggedIn ? (
           <Box>
             <IconButton color="inherit" onClick={() => navigate("/carts")}>
               <Badge badgeContent={0} color="error">
-                Cart <ShoppingCartIcon />
+                Cart {isLoggedIn}
+                <ShoppingCartIcon />
               </Badge>
             </IconButton>
-
-            <IconButton color="inherit">
+            <IconButton
+              color="inherit"
+              onClick={() => navigate(`/users/userDetails`)}
+            >
               Profile <AccountCircleIcon />
             </IconButton>
           </Box>
         ) : (
-          <></>
-        )}
+          <Button onClick={() => navigate("/login")}>Login {isLoggedIn}</Button>
+        )} */}
       </Toolbar>
     </AppBar>
   );

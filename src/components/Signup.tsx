@@ -1,20 +1,44 @@
-import React, { useState } from 'react';
-import { Button, TextField, Container, Typography, Link } from '@mui/material';
+import React, { useState } from "react";
+import {
+  Button,
+  TextField,
+  Container,
+  Typography,
+  Link,
+  Card,
+} from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signup: React.FC = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSignup = () => {
-    // Implement your signup logic here
-    console.log('Signup:', { firstName, lastName, email, password });
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const handleSignup = async () => {
+    try {
+      // Make API call to post login data
+      await axios.post("http://localhost:3000/users", {
+        email,
+        password,
+        firstName,
+        lastName,
+      });
+      navigate("/login");
+    } catch (error) {
+      alert("User already exists");
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      navigate("/signup");
+    }
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      <div>
+      <Card sx={{ padding: "1rem", marginTop: "auto" }}>
         <Typography variant="h5">Sign Up</Typography>
         <form>
           <TextField
@@ -68,11 +92,11 @@ const Signup: React.FC = () => {
           >
             Sign Up
           </Button>
-          <Typography variant="body2" style={{ marginTop: '1rem' }}>
+          <Typography variant="body2" style={{ marginTop: "1rem" }}>
             Already have an account? <Link href="/login">Login</Link>
           </Typography>
         </form>
-      </div>
+      </Card>
     </Container>
   );
 };

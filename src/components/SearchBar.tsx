@@ -1,28 +1,20 @@
 import { Search as SearchIcon } from "@mui/icons-material";
-import { IconButton, InputBase } from "@mui/material";
+import { Box, IconButton, InputBase } from "@mui/material";
 import { useState } from "react";
-
-interface SearchFilterProps {
-  handleNameFilter: (data: string) => void;
-}
-const SearchBar: React.FC<SearchFilterProps> = ({ handleNameFilter }) => {
+import { useDispatch } from "react-redux";
+import { edit } from "../features/search/searchSlice";
+// interface SearchFilterProps {
+//   handleNameFilter: (data: string) => void;
+// }
+const SearchBar: React.FC = () => {
+  const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
-    handleNameFilter(e.target.value);
+    dispatch(edit(searchValue));
   };
   return (
-    <div
-      style={{
-        position: "relative",
-        borderRadius: "4px",
-        backgroundColor: "#f1f1f1",
-        display: "flex",
-        alignItems: "center",
-        marginLeft: "auto",
-        marginBottom: "1.5rem",
-      }}
-    >
+    <Box className="search-bar">
       <IconButton style={{ padding: "8px", pointerEvents: "none" }}>
         <SearchIcon />
       </IconButton>
@@ -30,10 +22,10 @@ const SearchBar: React.FC<SearchFilterProps> = ({ handleNameFilter }) => {
         placeholder="Search…"
         value={searchValue}
         onChange={handleChange}
-        style={{ marginLeft: "8px", width: "100%" }}
+        style={{ width: "90%" }}
         inputProps={{ "aria-label": "search" }}
       />
-    </div>
+    </Box>
   );
 };
 

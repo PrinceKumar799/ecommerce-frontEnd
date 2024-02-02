@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import CartItems from "./CartCard";
 import { useNavigate } from "react-router-dom";
+import { Badge, Box, Button, CircularProgress, Paper } from "@mui/material";
+import { green } from "@mui/material/colors";
 interface CartObj {
   cartItemId: number;
   productId: number;
@@ -15,6 +17,7 @@ interface CartObj {
 type CartResponseData = CartObj[];
 const Cart: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartResponseData>();
+  const [totalValue, setTotalValue] = useState<number>(0);
   const navigate = useNavigate();
   const deleteFromCart = (productId: number) => {
     const authToken = localStorage.getItem("authToken");
@@ -43,7 +46,9 @@ const Cart: React.FC = () => {
         console.log(err);
       });
   };
-
+  const handleTotalAmount = (value: number) => {
+    setTotalValue(totalValue + value);
+  };
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
 
@@ -68,18 +73,37 @@ const Cart: React.FC = () => {
         console.error("Error fetching Cart:", error);
       });
   }, []);
-  if (!cartItems) return <h3>Loading...</h3>;
+  if (!cartItems) return <CircularProgress />;
 
   return (
-    <div>
+    <Box>
       {cartItems.map((cartItemData) => (
         <CartItems
           key={cartItemData.cartItemId}
           cartItemData={cartItemData}
           onDelete={deleteFromCart}
+          onUpdate={handleTotalAmount}
         />
       ))}
-    </div>
+      <Paper
+        elevation={20}
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          backgroundColor: "aquamarine",
+          marginLeft: "75%",
+          marginBottom: "2rem",
+          height: "5rem",
+          fontWeight: "bold",
+        }}
+      >
+        <Badge>Total: {totalValue}</Badge>
+        <Button variant="contained" color="success">
+          Checkout
+        </Button>
+      </Paper>
+    </Box>
   );
 };
 

@@ -10,15 +10,17 @@ import {
   Card,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { login } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleLogin = async () => {
     try {
       // Make API call to post login data
@@ -30,14 +32,12 @@ const Login: React.FC = () => {
 
       // Store the token in local storage
       localStorage.setItem("authToken", authToken);
-      navigate("/");
-
-      // console.log(authToken);
+      dispatch(login());
     } catch (error) {
-      setError("User does not exists");
+      //   setError("User does not exists");
     }
+    navigate("/");
   };
-
   return (
     <Container
       component="main"
@@ -90,11 +90,11 @@ const Login: React.FC = () => {
           >
             Login
           </Button>
-          {error && (
+          {/* {error && (
             <Typography variant="h6" color="red">
               {error}
             </Typography>
-          )}
+          )} */}
           <Typography variant="body2" style={{ marginTop: "1rem" }}>
             Don't have an account? <Link href="/signup">Sign Up</Link>
           </Typography>

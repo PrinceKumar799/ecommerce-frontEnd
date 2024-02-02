@@ -24,11 +24,15 @@ interface CartCardProps {
     productId: number;
   };
   onDelete: (productId: number) => void;
+  onUpdate: (value: number) => void;
 }
 
-const CartCard: React.FC<CartCardProps> = ({ cartItemData, onDelete }) => {
-  const { quantity, productName, price, image, rating, productId } =
-    cartItemData;
+const CartCard: React.FC<CartCardProps> = ({
+  cartItemData,
+  onDelete,
+  onUpdate,
+}) => {
+  const { quantity, productName, price, image, productId } = cartItemData;
   const [itemQuantity, setItemQuantity] = useState(quantity);
   const navigate = useNavigate();
 
@@ -50,7 +54,10 @@ const CartCard: React.FC<CartCardProps> = ({ cartItemData, onDelete }) => {
           },
         }
       )
-      .then(() => setItemQuantity(itemQuantity + 1))
+      .then(() => {
+        setItemQuantity(itemQuantity + 1);
+        onUpdate(price);
+      })
       .catch((error) => {
         // Handle the error
         console.error(error);
@@ -74,7 +81,10 @@ const CartCard: React.FC<CartCardProps> = ({ cartItemData, onDelete }) => {
           },
         }
       )
-      .then(() => setItemQuantity(itemQuantity - 1))
+      .then(() => {
+        setItemQuantity(itemQuantity - 1);
+        onUpdate(-price);
+      })
       .catch((error) => {
         // Handle the error
         console.error(error);

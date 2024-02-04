@@ -1,14 +1,15 @@
 import { ShoppingCart as ShoppingCartIcon } from "@mui/icons-material";
 import { AccountCircle as AccountCircleIcon } from "@mui/icons-material";
-import { Tab, Tabs, Box, Button } from "@mui/material";
+import { Tab, Tabs, Box, Button, Badge } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { RootState } from "../app/store";
 import { useSelector } from "react-redux";
+
 const HeaderTabs: React.FC = () => {
   const [value, setValue] = useState(0);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-
+  const cartCounter = useSelector((state: RootState) => state.cart.counter);
   return (
     <div className="tabs">
       {isLoggedIn ? (
@@ -18,7 +19,9 @@ const HeaderTabs: React.FC = () => {
           <Tab
             label={
               <Link to="/carts">
-                <ShoppingCartIcon />
+                <Badge badgeContent={cartCounter} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
               </Link>
             }
             className="tab"

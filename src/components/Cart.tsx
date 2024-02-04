@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useDebugValue, useEffect, useState } from "react";
 import CartItems from "./CartCard";
 import { useNavigate } from "react-router-dom";
 import { Badge, Box, Button, CircularProgress, Paper } from "@mui/material";
 import { green } from "@mui/material/colors";
+import { useDispatch } from "react-redux";
+import { remove } from "../features/cart/cartSlict";
 interface CartObj {
   cartItemId: number;
   productId: number;
@@ -49,7 +51,9 @@ const Cart: React.FC = () => {
   const handleTotalAmount = (value: number) => {
     setTotalValue(totalValue + value);
   };
+  const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(remove());
     const authToken = localStorage.getItem("authToken");
 
     // Check if authToken is available

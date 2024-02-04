@@ -2,7 +2,7 @@ import { AppBar, Toolbar, useMediaQuery, useTheme, Box } from "@mui/material";
 
 import DrawerNav from "./DrawerNav";
 import SearchBar from "./SearchBar";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.svg";
 import HeaderTabs from "./HeaderTabs";
 
 const Header = () => {

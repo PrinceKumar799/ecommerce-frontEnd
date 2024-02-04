@@ -10,9 +10,10 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../App.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import WishlistIcon from "./WishlistIcon";
+import { add } from "../features/cart/cartSlict";
 interface Product {
   name: string;
   productId: number;
@@ -28,7 +29,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { name, ratings, price, image, productId } = product;
   const navigate = useNavigate();
   const isLoggedIn = useSelector((State: RootState) => State.auth.isLoggedIn);
-
+  const dispatch = useDispatch();
   const handleAddToCart = async () => {
     if (!isLoggedIn) {
       alert("Please, Login First");
@@ -46,7 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         }
       );
       alert("Product Added To cart Succesfully");
-      navigate("/carts");
+      dispatch(add());
     } catch (error) {
       // Handle the error
       console.error("Error adding product to cart:");

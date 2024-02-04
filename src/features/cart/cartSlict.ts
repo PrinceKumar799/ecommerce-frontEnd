@@ -20,7 +20,7 @@ export const cartSlice = createSlice({
           state.counter = state.counter + 1;
       },
       remove: (state) => {
-          state.counter = state.counter - 1;
+          state.counter = 0;
       }
   },
 })

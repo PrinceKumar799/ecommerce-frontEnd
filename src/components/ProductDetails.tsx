@@ -1,15 +1,16 @@
 import { useParams } from "react-router-dom";
-import productsData from "../utils/productsData";
-import { Box, Grid, Rating, Typography } from "@mui/material";
+// import productsData from "../utils/productsData";
+import { Box, Grid, Typography } from "@mui/material";
 import "./ProductDetails.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import ReviewAccordion from "./ReviewAccordion";
 interface User {
   userId: string;
   firstName: string;
   lastName: string;
 }
-interface Review {
+export interface Review {
   reviewId: number;
   content: string;
   user: User;
@@ -21,13 +22,13 @@ interface ProductReviews {
   price: number;
   image: string;
   description: string;
-  reviews: Review[];
+  review: Review[];
 }
 
 const ProductDetails: React.FC = () => {
   //Get by id  from the Api
   const { productId } = useParams<{ productId: string }>();
-  console.log(productId);
+  //console.log(productId);
   const [productDetails, setProductDetails] = useState<ProductReviews>();
   useEffect(() => {
     axios
@@ -40,11 +41,18 @@ const ProductDetails: React.FC = () => {
         console.error(error);
       });
   }, []);
+  if (!productDetails) return <h1>Loading...</h1>;
+  if (!productId) return <h2>No Such product exists</h2>;
+  // console.log("productDetails", productDetails?.review);
   return (
     <Box sx={{ padding: "10%" }}>
       <Grid container>
         <Grid item xs={12} md={6}>
-          <img src={productDetails?.image} alt="product image" />
+          <img
+            style={{ marginTop: "auto" }}
+            src={productDetails?.image}
+            alt="product image"
+          />
         </Grid>
         <Grid item xs={12} md={6}>
           <Grid container direction="column" spacing={4}>
@@ -62,6 +70,12 @@ const ProductDetails: React.FC = () => {
             </Grid>
             <Grid item>
               <Typography>{productDetails?.description}</Typography>
+            </Grid>
+            <Grid item>
+              <ReviewAccordion
+                reviews={productDetails?.review}
+                productId={productId}
+              />
             </Grid>
           </Grid>
         </Grid>

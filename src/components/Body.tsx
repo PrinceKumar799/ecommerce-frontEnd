@@ -7,6 +7,8 @@ import Cart from "./Cart";
 import User from "./User";
 import ProductForm from "./ProductForm";
 import Wishlist from "./WishList";
+import UpdateProductForm from "./UpdateProductForm";
+import ProductsByUser from "./ProductsByUser";
 const Body: React.FC = () => {
   return (
     <div className="body">
@@ -14,6 +16,11 @@ const Body: React.FC = () => {
         <Route path="/login" Component={Login} />
         <Route path="products">
           <Route path="addProducts" element={<ProductForm />} />
+          <Route
+            path="editProducts/products/updateProducts/:productId"
+            element={<UpdateProductForm />}
+          />
+          <Route path="editProducts/" element={<ProductsByUser />} />
           <Route path=":productId" element={<ProductDetails />} />
         </Route>
 

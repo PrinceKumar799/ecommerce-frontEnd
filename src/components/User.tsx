@@ -71,11 +71,22 @@ const UserDetails: React.FC = () => {
               <ButtonGroup variant="text">
                 <Button
                   color="primary"
-                  onClick={() => {
+                  onClick={(event) => {
+                    event.preventDefault();
                     navigate("/products/addProducts");
                   }}
                 >
                   Add Products
+                </Button>
+                <Button
+                  color="primary"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    console.log("herre navigating");
+                    navigate("/products/editProducts");
+                  }}
+                >
+                  Edit Products
                 </Button>
                 <Button color="primary" onClick={handleLogout}>
                   Logout

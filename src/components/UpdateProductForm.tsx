@@ -1,31 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FilledInput from "@mui/material/FilledInput";
 import Button from "@mui/material/Button";
-import { Card, Container, InputLabel, Typography } from "@mui/material";
+import { Card, Container, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-const ProductForm = () => {
-  // const classes = useStyles();
+const UpdateProductForm = () => {
   const { productId } = useParams<{ productId: string }>();
-  const [fill, setfill] = useState(false);
-  if (productId) setfill(true);
-  const intialState = {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
     name: "",
     description: "",
     price: "",
     stockQuantity: "",
     category: "",
     imageURL: "",
-  };
-  const [formData, setFormData] = useState(intialState);
-  const navigate = useNavigate();
+  });
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/products/${productId}`
+        );
+        const productData = response.data;
+        setFormData({
+          name: productData.name,
+          description: productData.description,
+          price: productData.price,
+          stockQuantity: productData.stockQuantity,
+          category: productData.category,
+          imageURL: productData.image,
+        });
+        console.log(productData);
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      }
+    };
+
+    if (productId) {
+      fetchProductDetails();
+    }
+  }, [productId]);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
-    let val: string | number;
+    let val = value;
     if (name === "price" || name === "stockQuantity") {
       val = +value;
-    } else val = value;
+    }
     setFormData((prevData) => ({
       ...prevData,
       [name]: val,
@@ -34,14 +56,13 @@ const ProductForm = () => {
 
   const handleSubmit = async () => {
     try {
-      // Make API call to post login data
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
         alert("You are logged Out!!!");
         navigate("login");
       }
-      await axios.post(
-        "http://localhost:3000/products",
+      await axios.put(
+        `http://localhost:3000/products/${productId}`,
         {
           name: formData.name,
           description: formData.description,
@@ -56,17 +77,26 @@ const ProductForm = () => {
           },
         }
       );
-      alert("Product Added Sucessfully");
-      setFormData(intialState);
+      alert("Product Updated Successfully");
+
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        stockQuantity: "",
+        category: "",
+        imageURL: "",
+      });
     } catch (error) {
-      alert("Product was not added");
+      alert("Product operation failed");
+      console.error("Error:", error);
     }
   };
 
   return (
     <Container component="main" maxWidth="sm">
       <Card sx={{ padding: "1rem", marginTop: "auto" }}>
-        <Typography variant="h5">Add Product Details</Typography>
+        <Typography variant="h5">{"Update Product Details"}</Typography>
         <form className="form">
           <FilledInput
             placeholder="Name"
@@ -122,7 +152,7 @@ const ProductForm = () => {
             required
           />
           <Button variant="contained" color="primary" onClick={handleSubmit}>
-            Submit
+            Update
           </Button>
         </form>
       </Card>
@@ -130,4 +160,4 @@ const ProductForm = () => {
   );
 };
 
-export default ProductForm;
+export default UpdateProductForm;

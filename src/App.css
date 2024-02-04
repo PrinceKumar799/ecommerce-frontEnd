@@ -133,6 +133,53 @@
 .tab {
   margin: 0 10px; /* Adjust margin as needed */
 }
+/* Update these styles in your CSS file */
+.accordion-cnt {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-cnt .MuiAccordionSummary-root {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ddd;
+}
+
+.accordion-cnt .MuiAccordionSummary-content {
+  align-items: center;
+  max-height: 20vh;
+}
+
+.review-accordion-outer-cnt {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next line on smaller screens */
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.review-avatar {
+  width: 40px;
+  height: 40px;
+  margin-right: 16px;
+}
+
+.review-accordion-inner-cnt {
+  flex: 1;
+}
+
+.review-accordion-inner-cnt h6 {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.review-accordion-inner-cnt h5 {
+  font-size: 18px;
+  margin-top: 8px;
+}
 
 .icons {
   display: flex;

@@ -1,14 +1,16 @@
 import { Route, Routes } from "react-router-dom";
+import React, { Suspense } from "react";
 import Login from "./Login";
 import Products from "./Products";
 import ProductDetails from "./ProductDetails";
-import Signup from "./Signup";
-import Cart from "./Cart";
-import User from "./User";
-import ProductForm from "./ProductForm";
 import Wishlist from "./WishList";
 import UpdateProductForm from "./UpdateProductForm";
 import ProductsByUser from "./ProductsByUser";
+import Shimmer from "./Shimmer";
+const Signup = React.lazy(() => import("./Signup"));
+const Cart = React.lazy(() => import("./Cart"));
+const User = React.lazy(() => import("./User"));
+const ProductForm = React.lazy(() => import("./ProductForm"));
 const Body: React.FC = () => {
   return (
     <div className="body">
@@ -25,8 +27,22 @@ const Body: React.FC = () => {
         </Route>
 
         <Route path="/signup" Component={Signup} />
-        <Route path="/carts" Component={Cart} />
-        <Route path="/users/userDetails" Component={User}></Route>
+        <Route
+          path="/carts"
+          element={
+            <Suspense fallback={<Shimmer />}>
+              <Cart />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/users/userDetails"
+          element={
+            <Suspense fallback={<Shimmer />}>
+              <User></User>
+            </Suspense>
+          }
+        />
         <Route path="/wishlist" Component={Wishlist}></Route>
         <Route path="/" Component={Products} />
         <Route path="*" Component={Products}></Route>

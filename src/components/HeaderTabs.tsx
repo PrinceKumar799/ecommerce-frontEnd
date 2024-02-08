@@ -1,7 +1,7 @@
 import { ShoppingCart as ShoppingCartIcon } from "@mui/icons-material";
 import { AccountCircle as AccountCircleIcon } from "@mui/icons-material";
 import { Tab, Tabs, Box, Button, Badge } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { RootState } from "../app/store";
 import { useSelector } from "react-redux";
@@ -10,30 +10,33 @@ const HeaderTabs: React.FC = () => {
   const [value, setValue] = useState(0);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const cartCounter = useSelector((state: RootState) => state.cart.counter);
+  const navigate = useNavigate();
   return (
     <div className="tabs">
       {isLoggedIn ? (
         <Tabs value={value} onChange={(e, newVal) => setValue(newVal)}>
-          <Tab label={<Link to="/">Home</Link>} className="tab" />
-          <Tab label={<Link to="/wishlist">WishList</Link>} className="tab" />
+          <Tab label="Home" className="tab" onClick={() => navigate("/")} />
+          <Tab
+            label="WishList"
+            className="tab"
+            onClick={() => navigate("/wishlist")}
+          />
           <Tab
             label={
-              <Link to="/carts">
-                <Badge badgeContent={cartCounter} color="error">
-                  <ShoppingCartIcon />
-                </Badge>
-              </Link>
+              <Badge badgeContent={cartCounter} color="error">
+                <ShoppingCartIcon />
+              </Badge>
             }
+            onClick={() => navigate("/carts")}
             className="tab"
           />
           <Tab
             label={
-              <Link to="/users/userDetails">
-                <Box display="flex" justifyContent="center" alignItems="center">
-                  <AccountCircleIcon />
-                </Box>
-              </Link>
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <AccountCircleIcon />
+              </Box>
             }
+            onClick={() => navigate("/users/userDetails")}
             className="tab"
           />
         </Tabs>
@@ -42,17 +45,17 @@ const HeaderTabs: React.FC = () => {
           <Tab label={<Link to="/">Home</Link>} className="tab" />
           <Tab
             label={
-              <Link to="/login">
-                <Button>Login</Button>
-              </Link>
+              <Button variant="contained" onClick={() => navigate("/login")}>
+                Login
+              </Button>
             }
             className="tab"
           />
           <Tab
             label={
-              <Link to="/signup">
-                <Button>Signup</Button>
-              </Link>
+              <Button variant="outlined" onClick={() => navigate("/signup")}>
+                Signup
+              </Button>
             }
             className="tab"
           />

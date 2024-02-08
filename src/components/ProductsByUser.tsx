@@ -111,7 +111,6 @@ const ProductsByUser: React.FC = () => {
               <TableCell>Description</TableCell>
               <TableCell>Price</TableCell>
               <TableCell>Stock Quantity</TableCell>
-              <TableCell>Image URL</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -121,9 +120,8 @@ const ProductsByUser: React.FC = () => {
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.category}</TableCell>
                 <TableCell>{product.description}</TableCell>
-                <TableCell>${product.price}</TableCell>
+                <TableCell>₹{product.price}</TableCell>
                 <TableCell>{product.stockQuantity}</TableCell>
-                <TableCell>{product.imageURL}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained"

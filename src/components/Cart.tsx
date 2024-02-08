@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useDebugValue, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CartItems from "./CartCard";
 import { useNavigate } from "react-router-dom";
 import { Badge, Box, Button, CircularProgress, Paper } from "@mui/material";
-import { green } from "@mui/material/colors";
+// import { green } from "@mui/material/colors";
 import { useDispatch } from "react-redux";
 import { remove } from "../features/cart/cartSlict";
 interface CartObj {
@@ -21,7 +21,11 @@ const Cart: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartResponseData>();
   const [totalValue, setTotalValue] = useState<number>(0);
   const navigate = useNavigate();
-  const deleteFromCart = (productId: number) => {
+  const deleteFromCart = (
+    productId: number,
+    quantity: number,
+    price: number
+  ) => {
     const authToken = localStorage.getItem("authToken");
     if (!authToken) {
       navigate("/users/login");
@@ -43,13 +47,15 @@ const Cart: React.FC = () => {
           (cartItem) => cartItem.productId !== productId
         );
         setCartItems(newCartItems);
+        setTotalValue(totalValue - quantity * price);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  const handleTotalAmount = (value: number) => {
-    setTotalValue(totalValue + value);
+  const handleTotalAmount = (price: number) => {
+    // console.log(typeof price);
+    setTotalValue(totalValue + +price);
   };
   const dispatch = useDispatch();
   useEffect(() => {
@@ -72,9 +78,17 @@ const Cart: React.FC = () => {
       })
       .then((response) => {
         setCartItems(response.data);
+        setTotalValue(
+          response.data.reduce((accumulator: number, currObj: CartObj) => {
+            return accumulator + currObj.price * currObj.quantity;
+          }, 0)
+        );
       })
       .catch((error) => {
-        console.error("Error fetching Cart:", error);
+        if (error.response.status === 401) {
+          localStorage.removeItem("authToken");
+          navigate("/login");
+        }
       });
   }, []);
   if (!cartItems) return <CircularProgress />;
@@ -96,13 +110,13 @@ const Cart: React.FC = () => {
           justifyContent: "space-around",
           alignItems: "center",
           backgroundColor: "aquamarine",
-          marginLeft: "75%",
+          marginLeft: "20%",
           marginBottom: "2rem",
           height: "5rem",
           fontWeight: "bold",
         }}
       >
-        <Badge>Total: {totalValue}</Badge>
+        <Badge>Total: ₹{totalValue}</Badge>
         <Button variant="contained" color="success">
           Checkout
         </Button>

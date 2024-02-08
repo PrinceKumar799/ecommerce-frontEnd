@@ -39,7 +39,7 @@
 }
 
 .inner-cnt1:hover {
-  background-color: beige;
+  background-color: #f8f8f8;
 }
 
 .logo {
@@ -94,7 +94,7 @@
 
 .search-bar:hover {
   border: 2px solid blue;
-  background-color: rgb(168, 194, 194);
+  background-color: white;
 }
 .search-bar-box {
   display: flex;
@@ -107,7 +107,7 @@
 }
 
 .header:hover {
-  background-color: beige;
+  background-color: #f8f8f8;
 }
 
 .toolbar {
@@ -122,6 +122,11 @@
   border-radius: 50%;
 }
 
+.productDet {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
 .tabs {
   flex-grow: 1;
   display: flex;
@@ -158,6 +163,8 @@
   flex-wrap: wrap; /* Allow items to wrap to the next line on smaller screens */
   padding: 16px;
   border-bottom: 1px solid #ddd;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .review-avatar {
@@ -213,4 +220,12 @@
   max-width: 400;
   margin: auto;
   row-gap: 0.5rem;
+}
+
+.product-img {
+  margin-top: auto;
+  max-height: 50vh;
+}
+.product-img:hover {
+  transform: scale(1.4);
 }

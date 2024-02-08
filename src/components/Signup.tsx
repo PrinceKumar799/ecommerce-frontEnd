@@ -6,96 +6,109 @@ import {
   Typography,
   Link,
   Card,
+  FormControl,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import ConfiramationSnackBar from "./ConfirmationSnackBar";
+const initialUserData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+};
 const Signup: React.FC = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState(initialUserData);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const handleSignup = async () => {
+  const handleSignup = async (event: React.FormEvent) => {
+    event.preventDefault();
     try {
       // Make API call to post login data
-      await axios.post("http://localhost:3000/users", {
-        email,
-        password,
-        firstName,
-        lastName,
-      });
+      await axios.post("http://localhost:3000/users", userData);
       navigate("/login");
     } catch (error) {
-      alert("User already exists");
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setPassword("");
-      navigate("/signup");
+      // if (error?.response?.status === 400)
+      setErrorMessage("Something went wrong");
     }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const name = event.target.name;
+    const value = event.target.value;
+    setUserData({ ...userData, [name]: value });
   };
 
   return (
     <Container component="main" maxWidth="xs">
       <Card sx={{ padding: "1rem", marginTop: "auto" }}>
         <Typography variant="h5">Sign Up</Typography>
-        <form>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="firstName"
-            label="First Name"
-            name="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="lastName"
-            label="Last Name"
-            name="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="password"
-            label="Password"
-            name="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleSignup}
-          >
+        <form onSubmit={handleSignup}>
+          <FormControl fullWidth>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              required
+              label="First Name"
+              name="firstName"
+              value={userData.firstName}
+              onChange={handleChange}
+              autoFocus
+            />
+          </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              required
+              label="Last Name"
+              name="lastName"
+              value={userData.lastName}
+              onChange={handleChange}
+            />
+          </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              required
+              label="Email"
+              name="email"
+              type="email"
+              value={userData.email}
+              onChange={handleChange}
+            />
+          </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              label="Password"
+              name="password"
+              type="password"
+              value={userData.password}
+              onChange={handleChange}
+            />
+          </FormControl>
+          <Button type="submit" fullWidth variant="contained" color="primary">
             Sign Up
           </Button>
           <Typography variant="body2" style={{ marginTop: "1rem" }}>
             Already have an account? <Link href="/login">Login</Link>
           </Typography>
         </form>
+        {errorMessage && (
+          <ConfiramationSnackBar
+            onAdd={() => setErrorMessage("")}
+            isError={true}
+            message={errorMessage}
+          />
+        )}
       </Card>
     </Container>
   );

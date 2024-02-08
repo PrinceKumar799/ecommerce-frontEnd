@@ -5,6 +5,7 @@ import {
   Avatar,
   Box,
   Button,
+  Chip,
   InputAdornment,
   Stack,
   TextField,
@@ -17,12 +18,12 @@ interface ReviewComponentProps {
 }
 import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 const ReviewAccordion: React.FC<ReviewComponentProps> = ({
   reviews,
   productId,
 }) => {
-  console.log("Accordion", productId);
   const [reviewsData, setReviewData] = useState(reviews);
   const [content, setContent] = useState("");
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,14 +31,19 @@ const ReviewAccordion: React.FC<ReviewComponentProps> = ({
     setContent(e.target.value);
   };
 
-  const handleAddReview = () => {
+  const handleAddReview = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log("content");
+    // if (!content) {
+    //   return;
+    // }
     const token = localStorage.getItem("authToken");
     if (!token) alert("Kindly login again");
 
     axios
       .post(
-        `http://localhost:3000/products/${+productId}/addReview`,
-        { content },
+        "http://localhost:3000/reviews",
+        { content: `${content}`, productId: +productId },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -47,8 +53,8 @@ const ReviewAccordion: React.FC<ReviewComponentProps> = ({
       .then((response) => {
         // console.log(response);
         if (!reviewsData) setReviewData([response?.data]);
-        setReviewData((prevReviews) => [...prevReviews, response?.data]);
         setContent("");
+        setReviewData((prevReviews) => [response?.data, ...prevReviews]);
       })
       .catch((error) => {
         // Handle the error
@@ -61,9 +67,13 @@ const ReviewAccordion: React.FC<ReviewComponentProps> = ({
         <Typography variant="h5">Reviews</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Stack direction="column" sx={{ overflowY: "scroll" }}>
+        <Stack
+          direction="column"
+          sx={{ overflowY: "scroll", maxHeight: "300px" }}
+        >
           <TextField
             placeholder="post a review"
+            value={content}
             fullWidth
             onChange={handleChange}
             InputProps={{
@@ -80,19 +90,27 @@ const ReviewAccordion: React.FC<ReviewComponentProps> = ({
               ),
             }}
           />
-          {reviewsData?.map((review) => {
-            return (
-              <Box className="review-accordion-outer-cnt">
-                <Box className="review-accordion-inner-cnt">
-                  <Avatar></Avatar>
-                  <Typography variant="h6" color="GrayText">
-                    {review.user.firstName + " " + review.user.lastName}
-                  </Typography>
-                </Box>
-                <Typography variant="h5">{review.content}</Typography>
-              </Box>
-            );
-          })}
+          {reviewsData?.map((review) => (
+            <Box className="review-accordion-outer-cnt" key={review.reviewId}>
+              <Stack direction="column" alignItems="flex-start" spacing={1}>
+                <Chip
+                  size="small"
+                  color="secondary"
+                  variant="outlined"
+                  // avatar={<Avatar>{review.user.firstName.charAt(0)}</Avatar>}
+                  icon={<PermIdentityIcon />}
+                  label={review.user.firstName + " " + review.user.lastName}
+                />
+                {/* <Avatar
+                  sizes="small" // Add the actual avatar URL if available
+                ></Avatar>
+                <Typography variant="subtitle2" color="GrayText">
+                  {review.user.firstName + " " + review.user.lastName}
+                </Typography> */}
+                <Typography variant="subtitle1">{review.content}</Typography>
+              </Stack>
+            </Box>
+          ))}
         </Stack>
       </AccordionDetails>
     </Accordion>

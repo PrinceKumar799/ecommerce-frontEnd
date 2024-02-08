@@ -17,16 +17,31 @@ const Body: React.FC = () => {
       <Routes>
         <Route path="/login" Component={Login} />
         <Route path="products">
-          <Route path="addProducts" element={<ProductForm />} />
+          <Route
+            path="addProducts"
+            element={
+              <Suspense fallback={<Shimmer />}>
+                <ProductForm />
+              </Suspense>
+            }
+          />
           <Route
             path="editProducts/products/updateProducts/:productId"
             element={<UpdateProductForm />}
           />
           <Route path="editProducts/" element={<ProductsByUser />} />
           <Route path=":productId" element={<ProductDetails />} />
+          <Route index element={<Products />} />
         </Route>
 
-        <Route path="/signup" Component={Signup} />
+        <Route
+          path="/signup"
+          element={
+            <Suspense fallback={<Shimmer />}>
+              <Signup />
+            </Suspense>
+          }
+        />
         <Route
           path="/carts"
           element={

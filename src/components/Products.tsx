@@ -1,8 +1,7 @@
 import { Box, Pagination } from "@mui/material";
 import ProductCard from "./ProductCard";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
-import SearchBar from "./SearchBar";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import Shimmer from "./Shimmer";
@@ -28,7 +27,8 @@ const Products: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const filter = useSelector((state: RootState) => state.search.searchTerm);
-  const handePageChage = (event, value: number) => {
+  const handePageChage = (event: ChangeEvent<unknown>, value: number) => {
+    event.preventDefault();
     setPage(value);
   };
 
@@ -55,7 +55,7 @@ const Products: React.FC = () => {
   if (loading) return <Shimmer />;
 
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <Box className="outer-cnt">
         {products?.data?.map((product) => (
           <ProductCard key={product.productId} product={product} />
@@ -68,13 +68,14 @@ const Products: React.FC = () => {
         marginBottom="2rem"
       >
         <Pagination
-          count={5} // Replace with the actual count based on your data
+          count={3} // Replace with the actual count based on your data
           page={page}
           color="primary"
           onChange={handePageChage}
           sx={{
-            position: "fixed",
-            bottom: 0,
+            position: "absolute",
+            // bottom: 0,
+            marginTop: "auto",
             left: "50%",
             transform: "translateX(-50%)",
             marginBottom: "1rem",

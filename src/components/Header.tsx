@@ -2,17 +2,20 @@ import { AppBar, Toolbar, useMediaQuery, useTheme, Box } from "@mui/material";
 
 import DrawerNav from "./DrawerNav";
 import SearchBar from "./SearchBar";
-import logo from "../assets/logo.svg";
+import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
 import HeaderTabs from "./HeaderTabs";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const theme = useTheme();
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <AppBar position="sticky" color="inherit" className="header">
       <Toolbar className="toolbar">
-        <img src={logo} alt="Company Logo" className="logo" />
+        <Box onClick={() => navigate("/")}>
+          <CatchingPokemonIcon color="info" />
+        </Box>
         <Box className="search-bar-box">
           <SearchBar />
         </Box>

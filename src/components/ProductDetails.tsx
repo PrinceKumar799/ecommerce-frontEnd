@@ -17,6 +17,7 @@ import ReviewAccordion from "./ReviewAccordion";
 import { RootState } from "../app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { add } from "../features/cart/cartSlict";
+import ConfiramationSnackBar from "./ConfirmationSnackBar";
 interface User {
   userId: string;
   firstName: string;
@@ -45,9 +46,14 @@ const ProductDetails: React.FC = () => {
   const navigate = useNavigate();
   const isLoggedIn = useSelector((State: RootState) => State.auth.isLoggedIn);
   const dispatch = useDispatch();
-  const handleAddToCart = async () => {
+  const [snackbarObj, setSnackbarObj] = useState({ msg: "", isError: false });
+  const handleAddToCart = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
     if (!isLoggedIn) {
-      alert("Please, Login First");
+      //alert("Please, Login First");
+      localStorage.removeItem("authToken");
       navigate("/users/login");
     }
     const authToken = localStorage.getItem("authToken");
@@ -61,14 +67,49 @@ const ProductDetails: React.FC = () => {
           },
         }
       );
-      alert("Product Added To cart Succesfully");
+      setSnackbarObj({
+        msg: "Product Added To cart Succesfully",
+        isError: false,
+      });
       dispatch(add());
     } catch (error) {
       // Handle the error
-      console.error("Error adding product to cart:");
+      setSnackbarObj({ msg: "Error adding product to cart", isError: true });
     }
   };
-
+  const handleAddToWishlist = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    if (!isLoggedIn) {
+      alert("Please, Login First");
+      localStorage.removeItem("authToken");
+      navigate("/users/login");
+    }
+    const authToken = localStorage.getItem("authToken");
+    try {
+      if (!productId) throw new Error();
+      const id = +productId;
+      await axios.post(
+        "http://localhost:3000/wishlist",
+        { productId: id },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      setSnackbarObj({
+        msg: "Product Added To Wishlist Succesfully",
+        isError: false,
+      });
+    } catch (error) {
+      setSnackbarObj({
+        msg: "Error adding product to wishlist",
+        isError: true,
+      });
+    }
+  };
   useEffect(() => {
     axios
       .get(`http://localhost:3000/products/${productId}`)
@@ -86,7 +127,7 @@ const ProductDetails: React.FC = () => {
   return (
     <Box sx={{ padding: "2%" }}>
       <Grid container spacing={2}>
-        <Grid item xs={10} md={5}>
+        <Grid item xs={10} md={6}>
           <Box>
             <img
               className="product-img"
@@ -95,7 +136,7 @@ const ProductDetails: React.FC = () => {
             />
           </Box>
         </Grid>
-        <Grid item xs={10} md={5} marginLeft="auto">
+        <Grid item xs={12} md={6}>
           <Grid container direction="column" spacing={4}>
             <Grid item>
               <Paper elevation={3} sx={{ padding: "2rem" }}>
@@ -138,7 +179,9 @@ const ProductDetails: React.FC = () => {
                     <Button onClick={handleAddToCart} variant="contained">
                       Buy Now
                     </Button>
-                    <Button variant="outlined">Add to wishlist</Button>
+                    <Button variant="outlined" onClick={handleAddToWishlist}>
+                      Add to wishlist
+                    </Button>
                   </ButtonGroup>
                 </Stack>
               </Paper>
@@ -152,6 +195,13 @@ const ProductDetails: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
+      {snackbarObj.msg && (
+        <ConfiramationSnackBar
+          onAdd={() => setSnackbarObj({ msg: "", isError: false })}
+          message={snackbarObj.msg}
+          isError={snackbarObj.isError}
+        />
+      )}
     </Box>
   );
 };

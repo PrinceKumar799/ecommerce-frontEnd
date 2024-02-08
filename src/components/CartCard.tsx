@@ -23,7 +23,7 @@ interface CartCardProps {
     rating: number;
     productId: number;
   };
-  onDelete: (productId: number) => void;
+  onDelete: (productId: number, quantity: number, price: number) => void;
   onUpdate: (value: number) => void;
 }
 
@@ -119,9 +119,12 @@ const CartCard: React.FC<CartCardProps> = ({
               </IconButton>
             </Box>
             <Typography variant="subtitle1">
-              Subtotal: ${price * itemQuantity}
+              Subtotal: ₹{price * itemQuantity}
             </Typography>
-            <IconButton onClick={() => onDelete(productId)} color="error">
+            <IconButton
+              onClick={() => onDelete(productId, quantity, price)}
+              color="error"
+            >
               <DeleteIcon />
             </IconButton>
           </CardContent>

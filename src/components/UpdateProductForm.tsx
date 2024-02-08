@@ -23,6 +23,7 @@ const UpdateProductForm = () => {
           `http://localhost:3000/products/${productId}`
         );
         const productData = response.data;
+        console.log(productData);
         setFormData({
           name: productData.name,
           description: productData.description,
@@ -59,15 +60,15 @@ const UpdateProductForm = () => {
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
         alert("You are logged Out!!!");
-        navigate("login");
+        navigate("/login");
       }
-      await axios.put(
+      await axios.patch(
         `http://localhost:3000/products/${productId}`,
         {
           name: formData.name,
           description: formData.description,
-          stockQuantity: formData.stockQuantity,
-          price: formData.price,
+          stockQuantity: +formData.stockQuantity,
+          price: +formData.price,
           category: formData.category,
           image: formData.imageURL,
         },
@@ -78,7 +79,7 @@ const UpdateProductForm = () => {
         }
       );
       alert("Product Updated Successfully");
-
+      navigate("/user/userDetails");
       setFormData({
         name: "",
         description: "",
@@ -92,7 +93,6 @@ const UpdateProductForm = () => {
       console.error("Error:", error);
     }
   };
-
   return (
     <Container component="main" maxWidth="sm">
       <Card sx={{ padding: "1rem", marginTop: "auto" }}>

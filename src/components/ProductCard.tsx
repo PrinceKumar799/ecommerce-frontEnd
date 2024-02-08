@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -6,6 +6,8 @@ import {
   CardActions,
   Button,
   CardMedia,
+  Snackbar,
+  Rating,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -14,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import WishlistIcon from "./WishlistIcon";
 import { add } from "../features/cart/cartSlict";
+import ConfiramationSnackBar from "./ConfirmationSnackBar";
 interface Product {
   name: string;
   productId: number;
@@ -30,10 +33,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const navigate = useNavigate();
   const isLoggedIn = useSelector((State: RootState) => State.auth.isLoggedIn);
   const dispatch = useDispatch();
-  const handleAddToCart = async () => {
+  const [snackbarObj, setSnackbarObj] = useState({ msg: "", isError: false });
+  const handleAddToCart = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
     if (!isLoggedIn) {
-      alert("Please, Login First");
-      navigate("/users/login");
+      // alert("Please, Login First");
+      localStorage.removeItem("authToken");
+      navigate("/login");
     }
     const authToken = localStorage.getItem("authToken");
     try {
@@ -46,11 +54,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           },
         }
       );
-      alert("Product Added To cart Succesfully");
+      setSnackbarObj({
+        msg: "Product Added To cart Succesfully",
+        isError: false,
+      });
       dispatch(add());
     } catch (error) {
       // Handle the error
-      console.error("Error adding product to cart:");
+      setSnackbarObj({ msg: "Error adding product to cart", isError: true });
     }
   };
 
@@ -61,15 +72,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         alt={name}
         height="140"
         image={image}
-        style={{ objectFit: "fill" }}
+        style={{ objectFit: "contain" }}
       />
       <WishlistIcon productId={productId} />
       <Link to={`/products/${productId}`}>
         <CardContent>
           <Typography variant="h6">{name}</Typography>
-          <Typography variant="body2" color="text.secondary">
+          {/* <Typography variant="body2" color="text.secondary">
             Ratings: {ratings}
-          </Typography>
+          </Typography> */}
+          <Rating value={ratings} size="small" />
           <Typography variant="body1" color="blueviolet">
             Price: ₹{price}
           </Typography>
@@ -82,12 +94,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             sx={{
               margin: "auto",
             }}
-            onClick={() => handleAddToCart()}
+            onClick={handleAddToCart}
           >
             Add to cart
           </Button>
         </CardActions>
       </Link>
+      {snackbarObj.msg && (
+        <ConfiramationSnackBar
+          message={snackbarObj.msg}
+          isError={snackbarObj.isError}
+          onAdd={() => setSnackbarObj({ msg: "", isError: false })}
+        />
+      )}
     </Card>
   );
 };

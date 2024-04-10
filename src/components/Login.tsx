@@ -9,6 +9,8 @@ import {
   IconButton,
   Card,
   FormControl,
+  CardHeader,
+  CardContent,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
@@ -16,6 +18,7 @@ import { login } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ConfiramationSnackBar from "./ConfirmationSnackBar";
+import { REACT_APP_API_URL } from "../../constants.js";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -29,7 +32,7 @@ const Login: React.FC = () => {
     event.preventDefault();
     try {
       // Make API call to post login data
-      const response = await axios.post("http://localhost:3000/users/login", {
+      const response = await axios.post(`${REACT_APP_API_URL}/users/login`, {
         email,
         password,
       });
@@ -46,69 +49,63 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Card variant="elevation" sx={{ padding: "1.2rem" }}>
+    <Container component="main" maxWidth="xs">
+      <Card variant="elevation" sx={{ padding: "1rem", marginTop: "auto" }}>
         <Typography variant="h5">Login</Typography>
-        <form onSubmit={handleLogin}>
-          <FormControl fullWidth margin="normal">
-            <TextField
-              variant="outlined"
-              fullWidth
-              type="email"
-              label="Email Address"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoFocus
-              required
+        <CardContent>
+          <form onSubmit={handleLogin}>
+            <FormControl fullWidth margin="normal">
+              <TextField
+                variant="outlined"
+                fullWidth
+                type="email"
+                label="Email Address"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoFocus
+                required
+              />
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <TextField
+                variant="outlined"
+                fullWidth
+                required
+                label="Password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                      >
+                        {!showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </FormControl>
+            <Button type="submit" fullWidth variant="contained" color="primary">
+              Login
+            </Button>
+          </form>
+          {error && (
+            <ConfiramationSnackBar
+              message="Something went wrong"
+              isError={true}
+              onAdd={() => setError(false)}
             />
-          </FormControl>
-          <FormControl fullWidth margin="normal">
-            <TextField
-              variant="outlined"
-              fullWidth
-              required
-              label="Password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                    >
-                      {!showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </FormControl>
-          <Button type="submit" fullWidth variant="contained" color="primary">
-            Login
-          </Button>
-        </form>
-        {error && (
-          <ConfiramationSnackBar
-            message="Something went wrong"
-            isError={true}
-            onAdd={() => setError(false)}
-          />
-        )}
-        <Typography variant="body2" style={{ marginTop: "1rem" }}>
-          Don't have an account? <Link href="/signup">Sign Up</Link>
-        </Typography>
+          )}
+          <Typography variant="body2" style={{ marginTop: "1rem" }}>
+            Don't have an account? <Link href="/signup">Sign Up</Link>
+          </Typography>
+        </CardContent>
       </Card>
     </Container>
   );

@@ -18,6 +18,8 @@ import { RootState } from "../app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { add } from "../features/cart/cartSlict";
 import ConfiramationSnackBar from "./ConfirmationSnackBar";
+import { REACT_APP_API_URL } from "../../constants.js";
+
 interface User {
   userId: string;
   firstName: string;
@@ -59,7 +61,7 @@ const ProductDetails: React.FC = () => {
     const authToken = localStorage.getItem("authToken");
     try {
       await axios.post(
-        "http://localhost:3000/carts/addToCart",
+        `${REACT_APP_API_URL}/carts/addToCart`,
         { productId },
         {
           headers: {
@@ -91,7 +93,7 @@ const ProductDetails: React.FC = () => {
       if (!productId) throw new Error();
       const id = +productId;
       await axios.post(
-        "http://localhost:3000/wishlist",
+        `${REACT_APP_API_URL}/wishlist`,
         { productId: id },
         {
           headers: {
@@ -112,7 +114,7 @@ const ProductDetails: React.FC = () => {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/products/${productId}`)
+      .get(`REACT_APP_API_URL/products/${productId}`)
       .then((response) => {
         setProductDetails(response.data);
       })

@@ -10,8 +10,11 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  ButtonGroup,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { REACT_APP_API_URL } from "../../constants.js";
+
 interface ProductObj {
   productId: number;
   name: string;
@@ -28,14 +31,11 @@ const ProductsByUser: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/products/user",
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
+        const response = await axios.get(`${REACT_APP_API_URL}/products/user`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
         setProductData(response.data);
         console.log(response.data);
       } catch (error) {
@@ -48,7 +48,7 @@ const ProductsByUser: React.FC = () => {
 
   const handleDelete = async (productId: number) => {
     try {
-      await axios.delete(`http://localhost:3000/products/${productId}`, {
+      await axios.delete(`${REACT_APP_API_URL}/products/${productId}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -76,7 +76,7 @@ const ProductsByUser: React.FC = () => {
   //   const handleUpdateSubmit = async () => {
   //     try {
   //       await axios.put(
-  //         `http://localhost:3000/products/${selectedProduct.id}`,
+  //         `${REACT_APP_API_URL}/products/${selectedProduct.id}`,
   //         selectedProduct,
   //         {
   //           headers: {
@@ -123,24 +123,28 @@ const ProductsByUser: React.FC = () => {
                 <TableCell>₹{product.price}</TableCell>
                 <TableCell>{product.stockQuantity}</TableCell>
                 <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      console.log("edit button clicked");
-                      navigate(`products/updateProducts/${product.productId}`);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => handleDelete(product.productId)}
-                    sx={{ marginLeft: 1 }}
-                  >
-                    Delete
-                  </Button>
+                  <ButtonGroup variant="text">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        console.log("edit button clicked");
+                        navigate(
+                          `products/updateProducts/${product.productId}`
+                        );
+                      }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => handleDelete(product.productId)}
+                      sx={{ marginLeft: 1 }}
+                    >
+                      Delete
+                    </Button>
+                  </ButtonGroup>
                 </TableCell>
               </TableRow>
             ))}

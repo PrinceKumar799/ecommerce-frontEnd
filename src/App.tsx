@@ -1,8 +1,8 @@
-import { BrowserRouter as Router } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
 import Body from "./components/Body";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 
 // import productsData from "./utils/productsData";
 // type ProductObj = {
@@ -15,15 +15,11 @@ import Body from "./components/Body";
 function App() {
   return (
     <Router>
-      <Header />
-      {/* <Routes>
+      <Routes>
         <Route path="/login" Component={Login} />
-        <Route path="/" element={<Products />} />
-        <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/signup" Component={Signup} />
-      </Routes> */}
-      <Body />
-      <Footer />
+        <Route path="*" Component={Body} />
+      </Routes>
     </Router>
   );
 }

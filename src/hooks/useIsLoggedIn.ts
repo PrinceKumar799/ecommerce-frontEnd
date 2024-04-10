@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { REACT_APP_API_URL } from "../../constants.js";
 
 const useIsLoggedIn = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,7 +15,7 @@ const useIsLoggedIn = () => {
     const handleLogin = async (email:string,password:string) => {
         try {
           // Make API call to post login data
-          const response = await axios.post("http://localhost:3000/users/login", {
+          const response = await axios.post(`${REACT_APP_API_URL}/users/login`, {
             email,
             password,
           });

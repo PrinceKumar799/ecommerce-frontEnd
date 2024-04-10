@@ -15,12 +15,14 @@ interface CartObj {
   image: string;
   rating: number;
 }
+import { REACT_APP_API_URL } from "../../constants.js";
 
 type CartResponseData = CartObj[];
 const Cart: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartResponseData>();
   const [totalValue, setTotalValue] = useState<number>(0);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const deleteFromCart = (
     productId: number,
     quantity: number,
@@ -33,15 +35,11 @@ const Cart: React.FC = () => {
     }
 
     axios
-      .patch(
-        `http://localhost:3000/carts/remove?productId=${productId}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      )
+      .patch(`${REACT_APP_API_URL}/carts/remove?productId=${productId}`, null, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
       .then(() => {
         const newCartItems = cartItems?.filter(
           (cartItem) => cartItem.productId !== productId
@@ -57,7 +55,30 @@ const Cart: React.FC = () => {
     // console.log(typeof price);
     setTotalValue(totalValue + +price);
   };
-  const dispatch = useDispatch();
+
+  // const makePayment = async () => {
+  //   const authToken = localStorage.getItem("authToken");
+  //   if (!authToken) {
+  //     navigate("/users/login");
+  //     return;
+  //   }
+  //   const stripe = await loadStripe(
+  //     "pk_test_51OhUjdSIlwpnlAGIpupcblTe22OixlU399Y4gGnGds4pJdJRvrhWjU5zI8qxmDsK4I9vS83RrV3uur8bnSyj6izV00qE83SW9d"
+  //   );
+  //   const body = {
+  //     products: cartItems,
+  //   };
+  //   axios
+  //     .post(`REACT_APP_API_URL/carts/checkoutcart`, body, {
+  //       headers: {
+  //         Authorization: `Bearer ${authToken}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
   useEffect(() => {
     dispatch(remove());
     const authToken = localStorage.getItem("authToken");
@@ -67,7 +88,7 @@ const Cart: React.FC = () => {
       navigate("/users/login");
       return;
     }
-    const apiUrl = "http://localhost:3000/carts";
+    const apiUrl = `${REACT_APP_API_URL}/carts`;
 
     // Include Authorization header in the request
     axios
@@ -117,7 +138,7 @@ const Cart: React.FC = () => {
         }}
       >
         <Badge>Total: ₹{totalValue}</Badge>
-        <Button variant="contained" color="success">
+        <Button variant="contained" color="success" onClick={() => {}}>
           Checkout
         </Button>
       </Paper>

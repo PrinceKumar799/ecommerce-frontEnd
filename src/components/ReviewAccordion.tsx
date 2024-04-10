@@ -20,6 +20,8 @@ import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import React, { ChangeEvent, useState } from "react";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import { REACT_APP_API_URL } from "../../constants.js";
+
 const ReviewAccordion: React.FC<ReviewComponentProps> = ({
   reviews,
   productId,
@@ -42,7 +44,7 @@ const ReviewAccordion: React.FC<ReviewComponentProps> = ({
 
     axios
       .post(
-        "http://localhost:3000/reviews",
+        `${REACT_APP_API_URL}/reviews`,
         { content: `${content}`, productId: +productId },
         {
           headers: {

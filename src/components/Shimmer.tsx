@@ -1,14 +1,20 @@
 import { Box } from "@mui/material";
 
 const Shimmer: React.FC = () => {
-  const shimmerCards = new Array(12);
+  console.log("Shimmer");
   return (
     <Box className="outer-cnt">
-      {shimmerCards.map((i) => (
-        <Box className="inner-cnt1" key={i} sx={{ backgroundColor: "gray" }}>
-          Shimmer
-        </Box>
-      ))}
+      {Array(12)
+        .fill("")
+        .map((el: string, i) => (
+          <div
+            className="inner-cnt1"
+            key={i}
+            style={{
+              backgroundColor: "lightgray",
+            }}
+          ></div>
+        ))}
     </Box>
   );
 };

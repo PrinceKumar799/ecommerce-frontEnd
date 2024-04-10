@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import { Card, Container, InputLabel, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { REACT_APP_API_URL } from "../../constants.js";
 
 const ProductForm = () => {
   // const classes = useStyles();
@@ -41,7 +42,7 @@ const ProductForm = () => {
         navigate("login");
       }
       await axios.post(
-        "http://localhost:3000/products",
+        `${REACT_APP_API_URL}/products`,
         {
           name: formData.name,
           description: formData.description,

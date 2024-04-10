@@ -17,6 +17,8 @@ import { RootState } from "../app/store";
 import WishlistIcon from "./WishlistIcon";
 import { add } from "../features/cart/cartSlict";
 import ConfiramationSnackBar from "./ConfirmationSnackBar";
+import { REACT_APP_API_URL } from "../../constants.js";
+
 interface Product {
   name: string;
   productId: number;
@@ -46,7 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const authToken = localStorage.getItem("authToken");
     try {
       await axios.post(
-        "http://localhost:3000/carts/addToCart",
+        `${REACT_APP_API_URL}/carts/addToCart`,
         { productId },
         {
           headers: {

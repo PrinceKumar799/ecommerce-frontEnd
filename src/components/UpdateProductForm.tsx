@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import FilledInput from "@mui/material/FilledInput";
 import Button from "@mui/material/Button";
 import { Card, Container, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { REACT_APP_API_URL } from "../../constants.js";
 
 const UpdateProductForm = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -20,7 +21,7 @@ const UpdateProductForm = () => {
     const fetchProductDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/products/${productId}`
+          `${REACT_APP_API_URL}/products/${productId}`
         );
         const productData = response.data;
         console.log(productData);
@@ -43,9 +44,9 @@ const UpdateProductForm = () => {
     }
   }, [productId]);
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    let val = value;
+    let val: number | string = value;
     if (name === "price" || name === "stockQuantity") {
       val = +value;
     }
@@ -55,7 +56,8 @@ const UpdateProductForm = () => {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     try {
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
@@ -63,7 +65,7 @@ const UpdateProductForm = () => {
         navigate("/login");
       }
       await axios.patch(
-        `http://localhost:3000/products/${productId}`,
+        `${REACT_APP_API_URL}/products/${productId}`,
         {
           name: formData.name,
           description: formData.description,

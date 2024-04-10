@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import Shimmer from "./Shimmer";
+import { REACT_APP_API_URL } from "../../constants.js";
 
 type ProductObj = {
   productId: number;
@@ -33,7 +34,7 @@ const Products: React.FC = () => {
   };
 
   useEffect(() => {
-    const apiUrl = `http://localhost:3000/products?name=${filter}&p=${page}`;
+    const apiUrl = `${REACT_APP_API_URL}/products?name=${filter}&p=${page}`;
     setLoading(true);
     axios
       .get(apiUrl)
@@ -49,10 +50,8 @@ const Products: React.FC = () => {
         console.error("Error fetching products:", error);
       });
   }, [filter, page]);
-
-  useEffect(() => {}, []);
   //Impelment Shimmer
-  if (loading) return <Shimmer />;
+  if (loading || !products) return <Shimmer />;
 
   return (
     <div style={{ position: "relative" }}>

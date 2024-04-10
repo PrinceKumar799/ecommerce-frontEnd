@@ -227,5 +227,5 @@
   max-height: 50vh;
 }
 .product-img:hover {
-  transform: scale(1.4);
+  transform: scale(1.1);
 }

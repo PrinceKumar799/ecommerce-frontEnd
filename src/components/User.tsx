@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
+import { REACT_APP_API_URL } from "../../constants.js";
+
 const UserDetails: React.FC = () => {
   const [userData, setUserData] = useState<any>();
   const [loading, setLoading] = useState(true);
@@ -26,7 +28,7 @@ const UserDetails: React.FC = () => {
       return;
     }
 
-    const apiUrl = "http://localhost:3000/users/userDetails";
+    const apiUrl = `${REACT_APP_API_URL}/users/userDetails`;
 
     axios
       .get(apiUrl, {
@@ -39,10 +41,13 @@ const UserDetails: React.FC = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching user details:", error);
         setLoading(false);
+        if (error.response.status === 401) {
+          dispatch(logout());
+          navigate("/users/login");
+        }
       });
-  }, [navigate]);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");

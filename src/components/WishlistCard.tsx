@@ -9,7 +9,7 @@ import {
 import { DeleteOutlined } from "@mui/icons-material";
 interface WishlistCardProps {
   wishlistItemData: {
-    name: string;
+    productName: string;
     productId: number;
     price: number;
     image: string;
@@ -22,7 +22,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
   wishlistItemData,
   onDelete,
 }) => {
-  const { name, price, image, rating, productId } = wishlistItemData;
+  const { productName, price, image, rating, productId } = wishlistItemData;
   console.log(wishlistItemData);
   return (
     <Card sx={{ marginBottom: "1rem", padding: "1rem" }}>
@@ -30,7 +30,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
         <Grid item xs={12} md={6} lg={3}>
           <CardMedia
             component="img"
-            alt={name}
+            alt={productName}
             height="140"
             image={image}
             sx={{ objectFit: "contain" }}
@@ -40,7 +40,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
           <CardContent className="cart-card-cnt">
             <Grid container direction="column" spacing="2">
               <Grid item>
-                <Typography variant="subtitle1">{name}</Typography>
+                <Typography variant="subtitle1">{productName}</Typography>
               </Grid>
               <Grid>
                 <Typography variant="subtitle2">Price: ₹{price}</Typography>

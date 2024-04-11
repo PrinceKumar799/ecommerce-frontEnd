@@ -41,7 +41,7 @@ const ProductForm = () => {
         navigate("login");
       }
       await axios.post(
-        `${process.env.REACT_APP_API_URLL}/products`,
+        `${process.env.REACT_APP_API_URL}/products`,
         {
           name: formData.name,
           description: formData.description,

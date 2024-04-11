@@ -60,7 +60,7 @@ const ProductDetails: React.FC = () => {
     const authToken = localStorage.getItem("authToken");
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_URLL}/carts/addToCart`,
+        `${process.env.REACT_APP_API_URL}/carts/addToCart`,
         { productId },
         {
           headers: {
@@ -92,7 +92,7 @@ const ProductDetails: React.FC = () => {
       if (!productId) throw new Error();
       const id = +productId;
       await axios.post(
-        `${process.env.REACT_APP_API_URLL}/wishlist`,
+        `${process.env.REACT_APP_API_URL}/wishlist`,
         { productId: id },
         {
           headers: {
@@ -113,7 +113,7 @@ const ProductDetails: React.FC = () => {
   };
   useEffect(() => {
     axios
-      .get(`process.env.REACT_APP_API_URLL/products/${productId}`)
+      .get(`${process.env.REACT_APP_API_URL}/products/${productId}`)
       .then((response) => {
         setProductDetails(response.data);
       })

@@ -27,7 +27,7 @@ const UserDetails: React.FC = () => {
       return;
     }
 
-    const apiUrl = `${process.env.REACT_APP_API_URLL}/users/userDetails`;
+    const apiUrl = `${process.env.REACT_APP_API_URL}/users/userDetails`;
 
     axios
       .get(apiUrl, {

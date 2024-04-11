@@ -20,7 +20,7 @@ const UpdateProductForm = () => {
     const fetchProductDetails = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URLL}/products/${productId}`
+          `${process.env.REACT_APP_API_URL}/products/${productId}`
         );
         const productData = response.data;
         console.log(productData);
@@ -64,7 +64,7 @@ const UpdateProductForm = () => {
         navigate("/login");
       }
       await axios.patch(
-        `${process.env.REACT_APP_API_URLL}/products/${productId}`,
+        `${process.env.REACT_APP_API_URL}/products/${productId}`,
         {
           name: formData.name,
           description: formData.description,

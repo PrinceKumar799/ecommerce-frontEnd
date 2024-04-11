@@ -21,7 +21,7 @@ const WishlistIcon: React.FC<WishlistProps> = ({ productId }) => {
     const authToken = localStorage.getItem("authToken");
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_URLL}/wishlist`,
+        `${process.env.REACT_APP_API_URL}/wishlist`,
         { productId },
         {
           headers: {

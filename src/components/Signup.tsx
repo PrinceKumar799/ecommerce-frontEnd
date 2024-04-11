@@ -27,7 +27,7 @@ const Signup: React.FC = () => {
     event.preventDefault();
     try {
       // Make API call to post login data
-      await axios.post(`${process.env.REACT_APP_API_URLL}/users`, userData);
+      await axios.post(`${process.env.REACT_APP_API_URL}/users`, userData);
       navigate("/login");
     } catch (error) {
       if (error.response.status === 400) setErrorMessage("User Already Exists");

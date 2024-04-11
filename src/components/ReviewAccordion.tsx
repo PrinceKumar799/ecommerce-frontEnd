@@ -43,7 +43,7 @@ const ReviewAccordion: React.FC<ReviewComponentProps> = ({
 
     axios
       .post(
-        `${process.env.REACT_APP_API_URLL}/reviews`,
+        `${process.env.REACT_APP_API_URL}/reviews`,
         { content: `${content}`, productId: +productId },
         {
           headers: {

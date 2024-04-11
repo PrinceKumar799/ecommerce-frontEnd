@@ -33,7 +33,7 @@ const Products: React.FC = () => {
   };
 
   useEffect(() => {
-    const apiUrl = `${process.env.process.env.REACT_APP_API_URLL}/products?name=${filter}&p=${page}`;
+    const apiUrl = `${process.env.REACT_APP_API_URL}/products?name=${filter}&p=${page}`;
     setLoading(true);
     axios
       .get(apiUrl)

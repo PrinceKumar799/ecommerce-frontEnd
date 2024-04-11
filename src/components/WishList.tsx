@@ -25,7 +25,7 @@ const Wishlist: React.FC = () => {
 
     axios
       .delete(
-        `${process.env.REACT_APP_API_URLL}/wishlist/removeProduct/${productId}`,
+        `${process.env.REACT_APP_API_URL}/wishlist/removeProduct/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -51,7 +51,7 @@ const Wishlist: React.FC = () => {
       navigate("/users/login");
       return;
     }
-    const apiUrl = `${process.env.REACT_APP_API_URLL}/wishlist`;
+    const apiUrl = `${process.env.REACT_APP_API_URL}/wishlist`;
 
     // Include Authorization header in the request
     axios

@@ -31,7 +31,7 @@ const ProductsByUser: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URLL}/products/user`,
+          `${process.env.REACT_APP_API_URL}/products/user`,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -51,7 +51,7 @@ const ProductsByUser: React.FC = () => {
   const handleDelete = async (productId: number) => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_API_URLL}/products/${productId}`,
+        `${process.env.REACT_APP_API_URL}/products/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -81,7 +81,7 @@ const ProductsByUser: React.FC = () => {
   //   const handleUpdateSubmit = async () => {
   //     try {
   //       await axios.put(
-  //         `${process.env.REACT_APP_API_URLL}/products/${selectedProduct.id}`,
+  //         `${process.env.REACT_APP_API_URL}/products/${selectedProduct.id}`,
   //         selectedProduct,
   //         {
   //           headers: {

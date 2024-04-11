@@ -13,7 +13,7 @@ const useIsLoggedIn = () => {
     const handleLogin = async (email:string,password:string) => {
         try {
           // Make API call to post login data
-          const response = await axios.post(`${process.env.REACT_APP_API_URLL}/users/login`, {
+          const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/login`, {
             email,
             password,
           });

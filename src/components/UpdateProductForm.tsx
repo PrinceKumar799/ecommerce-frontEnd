@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import { Card, Container, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { REACT_APP_API_URL } from "../../constants.js";
 
 const UpdateProductForm = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -21,7 +20,7 @@ const UpdateProductForm = () => {
     const fetchProductDetails = async () => {
       try {
         const response = await axios.get(
-          `${REACT_APP_API_URL}/products/${productId}`
+          `${process.env.REACT_APP_API_URLL}/products/${productId}`
         );
         const productData = response.data;
         console.log(productData);
@@ -65,7 +64,7 @@ const UpdateProductForm = () => {
         navigate("/login");
       }
       await axios.patch(
-        `${REACT_APP_API_URL}/products/${productId}`,
+        `${process.env.REACT_APP_API_URLL}/products/${productId}`,
         {
           name: formData.name,
           description: formData.description,

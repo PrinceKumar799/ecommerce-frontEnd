@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
-import { REACT_APP_API_URL } from "../../constants.js";
 
 const UserDetails: React.FC = () => {
   const [userData, setUserData] = useState<any>();
@@ -28,7 +27,7 @@ const UserDetails: React.FC = () => {
       return;
     }
 
-    const apiUrl = `${REACT_APP_API_URL}/users/userDetails`;
+    const apiUrl = `${process.env.REACT_APP_API_URLL}/users/userDetails`;
 
     axios
       .get(apiUrl, {

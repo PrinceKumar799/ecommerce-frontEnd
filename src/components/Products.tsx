@@ -5,7 +5,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import Shimmer from "./Shimmer";
-import { REACT_APP_API_URL } from "../../constants.js";
 
 type ProductObj = {
   productId: number;
@@ -34,7 +33,7 @@ const Products: React.FC = () => {
   };
 
   useEffect(() => {
-    const apiUrl = `${REACT_APP_API_URL}/products?name=${filter}&p=${page}`;
+    const apiUrl = `${process.env.process.env.REACT_APP_API_URLL}/products?name=${filter}&p=${page}`;
     setLoading(true);
     axios
       .get(apiUrl)

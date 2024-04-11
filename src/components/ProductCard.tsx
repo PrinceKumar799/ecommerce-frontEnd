@@ -6,7 +6,6 @@ import {
   CardActions,
   Button,
   CardMedia,
-  Snackbar,
   Rating,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,7 +16,6 @@ import { RootState } from "../app/store";
 import WishlistIcon from "./WishlistIcon";
 import { add } from "../features/cart/cartSlict";
 import ConfiramationSnackBar from "./ConfirmationSnackBar";
-import { REACT_APP_API_URL } from "../../constants.js";
 
 interface Product {
   name: string;
@@ -48,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const authToken = localStorage.getItem("authToken");
     try {
       await axios.post(
-        `${REACT_APP_API_URL}/carts/addToCart`,
+        `${process.env.REACT_APP_API_URL}/carts/addToCart`,
         { productId },
         {
           headers: {

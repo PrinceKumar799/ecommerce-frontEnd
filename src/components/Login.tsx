@@ -9,7 +9,6 @@ import {
   IconButton,
   Card,
   FormControl,
-  CardHeader,
   CardContent,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
@@ -18,7 +17,6 @@ import { login } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ConfiramationSnackBar from "./ConfirmationSnackBar";
-import { REACT_APP_API_URL } from "../../constants.js";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -32,10 +30,13 @@ const Login: React.FC = () => {
     event.preventDefault();
     try {
       // Make API call to post login data
-      const response = await axios.post(`${REACT_APP_API_URL}/users/login`, {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/users/login`,
+        {
+          email,
+          password,
+        }
+      );
       const authToken = response.data.token;
 
       // Store the token in local storage

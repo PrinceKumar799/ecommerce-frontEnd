@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, CircularProgress } from "@mui/material";
 import WishlistCard from "./WishlistCard";
-import { REACT_APP_API_URL } from "../../constants.js";
 
 interface WishlistObj {
   productName: string;
@@ -25,11 +24,14 @@ const Wishlist: React.FC = () => {
     }
 
     axios
-      .delete(`${REACT_APP_API_URL}/wishlist/removeProduct/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
+      .delete(
+        `${process.env.REACT_APP_API_URLL}/wishlist/removeProduct/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
       .then(() => {
         const newWishlistItems = wislistItems?.filter(
           (cartItem) => cartItem.productId !== productId
@@ -49,7 +51,7 @@ const Wishlist: React.FC = () => {
       navigate("/users/login");
       return;
     }
-    const apiUrl = `${REACT_APP_API_URL}/wishlist`;
+    const apiUrl = `${process.env.REACT_APP_API_URLL}/wishlist`;
 
     // Include Authorization header in the request
     axios

@@ -15,7 +15,6 @@ interface CartObj {
   image: string;
   rating: number;
 }
-import { REACT_APP_API_URL } from "../../constants.js";
 
 type CartResponseData = CartObj[];
 const Cart: React.FC = () => {
@@ -35,11 +34,15 @@ const Cart: React.FC = () => {
     }
 
     axios
-      .patch(`${REACT_APP_API_URL}/carts/remove?productId=${productId}`, null, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
+      .patch(
+        `${process.env.REACT_APP_API_URL}/carts/remove?productId=${productId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
       .then(() => {
         const newCartItems = cartItems?.filter(
           (cartItem) => cartItem.productId !== productId
@@ -69,7 +72,7 @@ const Cart: React.FC = () => {
   //     products: cartItems,
   //   };
   //   axios
-  //     .post(`REACT_APP_API_URL/carts/checkoutcart`, body, {
+  //     .post(`process.env.REACT_APP_API_URL/carts/checkoutcart`, body, {
   //       headers: {
   //         Authorization: `Bearer ${authToken}`,
   //       },
@@ -88,7 +91,7 @@ const Cart: React.FC = () => {
       navigate("/users/login");
       return;
     }
-    const apiUrl = `${REACT_APP_API_URL}/carts`;
+    const apiUrl = `${process.env.REACT_APP_API_URL}/carts`;
 
     // Include Authorization header in the request
     axios

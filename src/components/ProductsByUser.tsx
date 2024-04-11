@@ -13,7 +13,6 @@ import {
   ButtonGroup,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { REACT_APP_API_URL } from "../../constants.js";
 
 interface ProductObj {
   productId: number;
@@ -31,11 +30,14 @@ const ProductsByUser: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${REACT_APP_API_URL}/products/user`, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URLL}/products/user`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
         setProductData(response.data);
         console.log(response.data);
       } catch (error) {
@@ -48,11 +50,14 @@ const ProductsByUser: React.FC = () => {
 
   const handleDelete = async (productId: number) => {
     try {
-      await axios.delete(`${REACT_APP_API_URL}/products/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      await axios.delete(
+        `${process.env.REACT_APP_API_URLL}/products/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
       alert("Product deleted successfully");
       const newProducts = productData?.filter(
         (product) => product.productId != productId
@@ -76,7 +81,7 @@ const ProductsByUser: React.FC = () => {
   //   const handleUpdateSubmit = async () => {
   //     try {
   //       await axios.put(
-  //         `${REACT_APP_API_URL}/products/${selectedProduct.id}`,
+  //         `${process.env.REACT_APP_API_URLL}/products/${selectedProduct.id}`,
   //         selectedProduct,
   //         {
   //           headers: {

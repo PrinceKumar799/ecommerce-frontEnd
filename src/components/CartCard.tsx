@@ -13,7 +13,6 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { REACT_APP_API_URL } from "../../constants.js";
 
 interface CartCardProps {
   cartItemData: {
@@ -47,7 +46,7 @@ const CartCard: React.FC<CartCardProps> = ({
 
     axios
       .post(
-        `${REACT_APP_API_URL}/carts/addToCart`,
+        "http://localhost:3000/carts/addToCart",
         { productId },
         {
           headers: {
@@ -74,7 +73,7 @@ const CartCard: React.FC<CartCardProps> = ({
 
     axios
       .patch(
-        `${REACT_APP_API_URL}/carts/removeOne`,
+        "http://localhost:3000/carts/removeOne",
         { productId },
         {
           headers: {

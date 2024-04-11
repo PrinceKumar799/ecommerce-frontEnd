@@ -5,7 +5,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import { useState } from "react";
-import { REACT_APP_API_URL } from "../../constants.js";
 
 type WishlistProps = {
   productId: number;
@@ -22,7 +21,7 @@ const WishlistIcon: React.FC<WishlistProps> = ({ productId }) => {
     const authToken = localStorage.getItem("authToken");
     try {
       await axios.post(
-        `${REACT_APP_API_URL}/wishlist`,
+        `${process.env.REACT_APP_API_URLL}/wishlist`,
         { productId },
         {
           headers: {

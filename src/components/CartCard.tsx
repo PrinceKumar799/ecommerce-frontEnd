@@ -46,7 +46,7 @@ const CartCard: React.FC<CartCardProps> = ({
 
     axios
       .post(
-        "http://localhost:3000/carts/addToCart",
+        `${process.env.REACT_APP_API_URL}/carts/addToCart`,
         { productId },
         {
           headers: {
@@ -73,7 +73,7 @@ const CartCard: React.FC<CartCardProps> = ({
 
     axios
       .patch(
-        "http://localhost:3000/carts/removeOne",
+        `${process.env.REACT_APP_API_URL}/carts/removeOne`,
         { productId },
         {
           headers: {
